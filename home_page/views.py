@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import News
+from .models import *
 from .forms import NewsForm
 from django.http import Http404
 from django.contrib import messages
@@ -43,8 +43,10 @@ class NewsDetailsView(View):
         news = News.objects.filter(pk=pk)
         if news:
             news = news.first()
+            comments = Comment.objects.filter(author=news.author)
             context = {
-                'news': news
+                'news': news,
+                'comment': comments
             }
             return render(request, 'home_page/news_detail.html', context)
         raise Http404

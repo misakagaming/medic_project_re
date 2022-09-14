@@ -11,3 +11,13 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    news = models.ForeignKey(News, on_delete=models.CASCADE)
+    content = models.TextField()
+    date_posted = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Post {self.id} of user {self.author}'
