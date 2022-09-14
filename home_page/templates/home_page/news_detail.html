@@ -19,18 +19,20 @@
         <p class="article-content">{{ news.content }}</p>
       </div>
     </article>
-    <div class="content-section">
-        <form action="" method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Comment</legend>
-                {{ form|crispy  }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Post Comment</button>
-            </div>
-        </form>
-    </div>
+    {% if user.is_authenticated %}
+        <div class="content-section">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Comment</legend>
+                    {{ form|crispy  }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Post Comment</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
     {% for comment in comments %}
         <article class="media content-section">
             <img class="rounded-circle article-img" src="{{ comment.author.profile.image.url }}">
