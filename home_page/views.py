@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import *
-from .forms import NewsForm
+from .forms import *
 from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -41,15 +40,27 @@ class UserNewsView(View):
 class NewsDetailsView(View):
     def get(self, request, pk):
         news = News.objects.filter(pk=pk)
+        form = CommentForm()
         if news:
             news = news.first()
-            comments = Comment.objects.filter(author=news.author)
+            comments = Comment.objects.filter(news=news).order_by('-date_posted')
             context = {
                 'news': news,
-                'comment': comments
+                'comments': comments,
+                'form': form
             }
             return render(request, 'home_page/news_detail.html', context)
         raise Http404
+
+    def post(self, request, pk):
+        form = CommentForm(request.POST, request.FILES)
+        if form.is_valid():
+            comment_created = form.save(commit=False)
+            comment_created.author = request.user
+            comment_created.news_id = pk
+            comment_created.save()
+
+        return redirect('news-detail', pk=pk)
 
 
 class NewsCreateView(LoginRequiredMixin, View):
