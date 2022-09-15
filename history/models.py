@@ -15,6 +15,9 @@ class Illness(models.Model):
     name = models.CharField(max_length=100)
     type = models.ForeignKey(IllnessType, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name_plural = "Illnesses"
+
     def __str__(self):
         return self.name
 
