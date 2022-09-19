@@ -35,13 +35,14 @@ class ProfileView(View):
         return render(request, 'users/profile.html', context)
 
     def post(self, request, username):
-        u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        user = User.objects.get(username=username)
+        u_form = UserUpdateForm(request.POST, instance=user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=user.profile)
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
             messages.success(request, f'Account updated.')
-            return redirect('profile', username=request.user.username)
+            return redirect('profile', username=user.username)
         context = {
             'u_form': u_form,
             'p_form': p_form
