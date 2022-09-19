@@ -7,6 +7,10 @@ from django.utils import timezone
 class IllnessType(models.Model):
     type = models.CharField(max_length=100)
 
+    class Meta:
+        verbose_name = "Illness Type"
+        verbose_name_plural = "Illness Types"
+
     def __str__(self):
         return self.type
 
@@ -44,3 +48,7 @@ class MedicalHistoryRecord(models.Model):
     illness = models.ForeignKey(Illness, on_delete=models.CASCADE)
     treatment = models.OneToOneField(Treatment, on_delete=models.CASCADE)
     date_recorded = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = "Medical History Record"
+        verbose_name_plural = "Medical History Records"
