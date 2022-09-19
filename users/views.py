@@ -41,7 +41,7 @@ class ProfileView(View):
             u_form.save()
             p_form.save()
             messages.success(request, f'Account updated.')
-            return redirect('profile', username=username)
+            return redirect('profile', username=request.user.username)
         context = {
             'u_form': u_form,
             'p_form': p_form
