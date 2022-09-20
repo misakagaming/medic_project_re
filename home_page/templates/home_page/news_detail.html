@@ -6,7 +6,7 @@
         <img class="rounded-circle article-img" src="{{ news.author.profile.image.url }}">
       <div class="media-body">
         <div class="article-metadata">
-          <a class="mr-2" href="{% url 'user-news' news.author.username%}">{{ news.author }}</a>
+          <a class="mr-2" href="{% url 'profile' news.author.username%}">{{ news.author }}</a>
           <small class="text-muted">{{ news.date_posted|date:"F d, Y, f A" }}</small>
           {% if news.author == user %}
               <div>
@@ -41,6 +41,7 @@
                     data: comment_form.serialize(),
                     header: {'X-CSRFToken' : '{% csrf_token %}'},
                     success:function(response){
+
                           alert('Saved');
                             }
                     });
@@ -48,16 +49,7 @@
             </script>
         </div>
     {% endif %}
-    {% for comment in comments %}
-        <article class="media content-section">
-            <img class="rounded-circle article-img" src="{{ comment.author.profile.image.url }}">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="{% url 'user-news' comment.author.username%}">{{ comment.author }}</a>
-              <small class="text-muted">{{ comment.date_posted|date:"F d, Y, f A" }}</small>
-            </div>
-            <p class="article-content">{{ comment.content }}</p>
-          </div>
-        </article>
-    {% endfor %}
+    <article class="content-section" id="comment-list">
+        {% include 'home_page/comment_list.html' %}
+    </article>
 {% endblock content %}

@@ -9,4 +9,9 @@ urlpatterns = [
     path('news/<int:pk>/delete/', views.NewsDeleteView.as_view(), name='news-delete'),
     path('news/new/', views.NewsCreateView.as_view(), name='news-create'),
     path('about/', views.AboutView.as_view(), name='hospital-about'),
+    path('comment/', views.AddCommentView.as_view(), name='add-comment'),
+]
+
+htmx_urlpatterns = [
+
 ]

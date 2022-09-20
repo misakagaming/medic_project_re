@@ -60,7 +60,21 @@ class NewsDetailsView(View):
             comment_created.news_id = pk
             comment_created.save()
 
-        return redirect('news-detail', pk=pk)
+        return redirect('news-detail', pk)
+
+
+class AddCommentView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        form = CommentForm(request.POST, request.FILES)
+        comments = Comment.objects.filter(news_id=pk).order_by('-date_posted')
+        if form.is_valid():
+            comment_created = form.save(commit=False)
+            comment_created.author = request.user
+            comment_created.news_id = pk
+            comment_created.save()
+            comments = Comment.objects.filter(news_id=pk).order_by('-date_posted')
+
+        return render(request, 'home_page/comment_list.html', {'comments': comments})
 
 
 class NewsCreateView(LoginRequiredMixin, View):

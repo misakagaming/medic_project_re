@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.models import User
+from home_page.models import News, Comment
 
 
 class RegisterView(View):
@@ -24,13 +25,15 @@ class RegisterView(View):
 class ProfileView(View):
     def get(self, request, username):
         user = User.objects.get(username=username)
+        news = News.objects.filter(author=user)
         u_form = UserUpdateForm(instance=user)
         p_form = ProfileUpdateForm(instance=user)
         context = {
             'u_form': u_form,
             'p_form': p_form,
             'title': f'Profile of {user.username}',
-            'profile_user': user
+            'profile_user': user,
+            'news': news
         }
         return render(request, 'users/profile.html', context)
 

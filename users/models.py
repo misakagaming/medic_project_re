@@ -1,14 +1,17 @@
 from django.db import models
+from django import forms
 from django.contrib.auth.models import User
 from PIL import Image
 
-
 # Create your models here.
+CHOICES = (('a', 'Patient'),
+           ('b', 'Doctor'))
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='blank-profile-picture.png', upload_to='profile_pics')
+    user_type = models.CharField(max_length=1, choices=CHOICES, default='a')
 
     def __str__(self):
         return f'Profile of {self.user.username}'
