@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.http import Http404
 from .models import *
+from django.contrib import messages
 
 # Create your views here.
 
@@ -17,5 +18,8 @@ class UserMedicalHistoryView(LoginRequiredMixin, View):
             'patient': patient,
             'records': records
         }
+        if not patient.id == request.user.id:
+            messages.error(request, f'Current authorised user is not the correct patient')
+            return redirect('hospital-home')
         return render(request, 'history/user_records.html', context)
 
