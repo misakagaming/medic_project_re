@@ -3,6 +3,7 @@ from django.views import View
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from .models import Profile
 from django.contrib.auth.models import User
 from home_page.models import News, Comment
 
@@ -15,8 +16,11 @@ class RegisterView(View):
     def post(self, request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
+            user = form.save()
+            user.refresh_from_db()
+            user.profile.user_type = form.cleaned_data.get('user_type')
+            Profile.objects.update_or_create(user=user)
+            user.save()
             messages.success(request, f'Account created!')
             return redirect('login')
         return render(request, 'users/register.html', {'form': form})
@@ -25,6 +29,7 @@ class RegisterView(View):
 class ProfileView(View):
     def get(self, request, username):
         user = User.objects.get(username=username)
+        profile = Profile.objects.get(user=user)
         news = News.objects.filter(author=user)
         u_form = UserUpdateForm(instance=user)
         p_form = ProfileUpdateForm(instance=user)
@@ -33,7 +38,8 @@ class ProfileView(View):
             'p_form': p_form,
             'title': f'Profile of {user.username}',
             'profile_user': user,
-            'news': news
+            'news': news,
+            'profile': profile
         }
         return render(request, 'users/profile.html', context)
 

@@ -8,7 +8,7 @@
         <div class="media-body">
           <h2 class="account-heading">{{ profile_user.username }}</h2>
           <p class="text-secondary">{{ profile_user.email }}</p>
-          <p class="text-secondary">{{ profile_user.profile.get_user_type_display }}</p>
+          <p class="text-secondary">{{ profile.get_user_type_display }}</p>
           <a class="mr-2" href="{% url 'user-news' profile_user.username%}">{{ profile_user }}'s News</a>
           {% if user.is_authenticated %}
               {% if profile_user == user%}
