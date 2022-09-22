@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from .models import Profile
 from django.contrib.auth.models import User
-from home_page.models import News, Comment
+from home_page.models import News
 
 
 class RegisterView(View):
