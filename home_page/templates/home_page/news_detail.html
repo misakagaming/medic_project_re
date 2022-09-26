@@ -48,7 +48,31 @@
             });
             </script>
         </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="modal fade" id="commentModal">
+                        <div class="modal-dialog">
+                            <div class="modal-header">
+                                <h1>Comment</h1>
+                            </div>
+                            <div class="modal-body">
+                                Heh
+                            </div>
+                            <div class="modal-footer">
+                                <input class="btn btn-default" value="Close">
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#" data-toggle="modal" data-target="#commentModal">Comment</a>
+
+                </div>
+            </div>
+        </div>
     {% endif %}
+
     <article class="content-section" id="comment-list">
         {% include 'home_page/comment_list.html' %}
     </article>
