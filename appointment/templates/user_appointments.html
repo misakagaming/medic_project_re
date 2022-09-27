@@ -1,0 +1,22 @@
+{% extends "home_page/base.html" %}
+{% block content %}
+    <title>Hospital - Appointments of {{ user.username }}</title>
+        <h1 class="mb-3">Appointments of {{user.username }}</h1>
+        <table class="table table-striped table-bordered table-stuff">
+        <tr>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Time</th>
+            <th>Illness Type</th>
+        </tr>
+        {% for appointment in appointments %}
+        <tr>
+            <td>{{ appointment.patient }}</td>
+            <td>{{ appointment.doctor }}</td>
+            <td>{{ appointment.get_time_display }}</td>
+            <td>{{ appointment.type }}</td>
+        </tr>
+        {% endfor %}
+        </table>
+        <a class="mr-2" href="{% url 'profile' user.username %}">Back to {{ user }}'s Profile</a>
+{% endblock content %}

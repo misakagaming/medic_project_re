@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'dajaxice',
     'dajax',
     'crispy_forms',
+    'appointment.apps.AppointmentConfig',
     'history.apps.HistoryConfig',
     'users.apps.UsersConfig',
     'home_page.apps.HomePageConfig',

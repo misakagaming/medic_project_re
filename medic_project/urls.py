@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from users import views as user_views
 from history import views as history_views
+from appointment import views as appointment_views
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -30,6 +31,8 @@ urlpatterns = [
     path('records/<username>/',
          history_views.UserMedicalHistoryView.as_view(),
          name='records'),
+    path('appointments/', appointment_views.MakeAppointmentView.as_view(), name='create-appointment'),
+    path('appointments/<username>/', appointment_views.ListAppointmentsView.as_view(), name='list-appointment'),
     path('', include('home_page.urls')),
 ]
 
