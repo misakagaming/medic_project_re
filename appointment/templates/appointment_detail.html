@@ -1,24 +1,23 @@
 {% extends "home_page/base.html" %}
 {% block content %}
-    <title>Hospital - Appointments of {{ user.username }}</title>
-        <h1 class="mb-3">Appointments of {{user.username }}</h1>
+    <title>Hospital - Appointments of {{ user.username }}: Detail</title>
+        <h1 class="mb-3">Appointments of {{user.username }}: Detail</h1>
         <table class="table table-striped table-bordered" style="width: 2500px">
         <tr>
             <th>Patient</th>
             <th>Doctor</th>
             <th>Time</th>
             <th>Illness Type</th>
-            <th>Details</th>
+            <th>Is Active</th>
         </tr>
-        {% for appointment in appointments %}
         <tr>
             <td>{{ appointment.patient }}</td>
             <td>{{ appointment.doctor }}</td>
             <td>{{ appointment.get_time_display }}</td>
             <td>{{ appointment.type }}</td>
-            <td><a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{% url 'appointment-detail' user.username appointment.pk %}">Details</a></td>
+            <td>{{ appointment.active }}</td>
         </tr>
-        {% endfor %}
         </table>
-        <a class="mr-2" href="{% url 'profile' user.username %}">Back to {{ user }}'s Profile</a>
+        <a class="mr-2" href="{% url 'list-appointment' user.username %}">Back to {{ user }}'s Appointments</a>
+        <a class="mr-2" href="{% url 'profile' user.username %}"><br>Back to {{ user }}'s Profile</a>
 {% endblock content %}

@@ -33,6 +33,7 @@ urlpatterns = [
          name='records'),
     path('appointments/', appointment_views.MakeAppointmentView.as_view(), name='create-appointment'),
     path('appointments/<username>/', appointment_views.ListAppointmentsView.as_view(), name='list-appointment'),
+    path('appointments/<username>/<int:pk>', appointment_views.AppointmentDetailView.as_view(), name='appointment-detail'),
     path('', include('home_page.urls')),
 ]
 

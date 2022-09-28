@@ -24,8 +24,8 @@ TIME_CHOICES = (('a', '9:00 - 9:20'),
 
 class Appointment(models.Model):
     patient = models.ForeignKey(User, related_name="patient", on_delete=models.CASCADE)
-    type = models.ForeignKey(IllnessType, null=True, on_delete=models.SET_NULL)
-    doctor = models.ForeignKey(User, null=True, related_name="doctor", on_delete=models.SET_NULL)
+    type = models.ForeignKey(IllnessType, null=True, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(User, null=True, related_name="doctor", on_delete=models.CASCADE)
     time = models.CharField(max_length=1, choices=TIME_CHOICES)
     active = models.BooleanField(default=True)
 

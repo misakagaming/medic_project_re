@@ -85,5 +85,7 @@ a.article-title:hover {
 }
 
 .table-stuff {
-  width: 100cm;
+  white-space: normal;
+  width: 200px;
+  height: 45px;
 }
