@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator
-from django.contrib.auth.models import User
-from django.http import Http404
+from appointment.models import Appointment
 from .models import *
 from django.contrib import messages
 
@@ -18,8 +16,11 @@ class UserMedicalHistoryView(LoginRequiredMixin, View):
             'patient': patient,
             'records': records
         }
-        if not patient.id == request.user.id:
-            messages.error(request, f'Current authorised user is not the correct patient')
+        appointment = Appointment.objects.filter(patient=patient, doctor_id=request.user.id)
+        if not patient.id == request.user.id and not appointment:
+            messages.error(request, f'Current authorised user is not the correct patient or doctor!')
             return redirect('hospital-home')
         return render(request, 'history/user_records.html', context)
+
+
 

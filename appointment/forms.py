@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
-from history.models import IllnessType
-from users.models import Profile
+from history.models import IllnessType, Treatment, TYPE_CHOICES
 from .models import TIME_CHOICES, Appointment
 from django import forms
 
@@ -14,3 +13,14 @@ class AppointmentForm(forms.ModelForm):
     class Meta:
         model = Appointment
         fields = ['doctor', 'type', 'time']
+
+
+class TreatmentForm(forms.ModelForm):
+    diagnosis = forms.CharField()
+    type = forms.ChoiceField(choices=TYPE_CHOICES)
+    dose = forms.IntegerField()
+    duration = forms.IntegerField()
+
+    class Meta:
+        model = Treatment
+        fields = ['diagnosis', 'name', 'type', 'dose', 'hospital_name', 'duration']

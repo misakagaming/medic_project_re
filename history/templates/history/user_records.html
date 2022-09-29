@@ -16,9 +16,9 @@
         <tr>
             <td>{{ record.illness.name }}</td>
             <td>{{ record.treatment.name }}</td>
-            {% if record.treatment.is_hospital_stay %}
+            {% if record.treatment.type == 'b' %}
                 <td>Hospital Stay</td>
-            {% elif record.treatment.is_prescription %}
+            {% elif record.treatment.type == 'a' %}
                 <td>Prescription</td>
             {% endif %}
             <td>{{ record.treatment.dose }}</td>

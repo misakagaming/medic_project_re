@@ -9,15 +9,25 @@
             <th>Time</th>
             <th>Illness Type</th>
             <th>Is Active</th>
+            {% if type == 'b' %}
+                <th>Apply Treatment</th>
+            {% endif %}
         </tr>
         <tr>
             <td>{{ appointment.patient }}</td>
             <td>{{ appointment.doctor }}</td>
             <td>{{ appointment.get_time_display }}</td>
             <td>{{ appointment.type }}</td>
-            <td>{{ appointment.active }}</td>
+            {% if appointment.active %}
+                <td>Yes</td>
+            {% else %}
+                <td>No</td>
+            {% endif %}
+            {% if type == 'b' %}
+                <th><a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{% url 'treatment' user.username appointment.pk %}">Apply Treatment</a></th>
+            {% endif %}
         </tr>
         </table>
-        <a class="mr-2" href="{% url 'list-appointment' user.username %}">Back to {{ user }}'s Appointments</a>
+        <a class="mr-2" href="{% url 'list-appointment' user.username 'active' %}">Back to {{ user }}'s Appointments</a>
         <a class="mr-2" href="{% url 'profile' user.username %}"><br>Back to {{ user }}'s Profile</a>
 {% endblock content %}

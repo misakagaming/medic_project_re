@@ -32,8 +32,11 @@ urlpatterns = [
          history_views.UserMedicalHistoryView.as_view(),
          name='records'),
     path('appointments/', appointment_views.MakeAppointmentView.as_view(), name='create-appointment'),
-    path('appointments/<username>/', appointment_views.ListAppointmentsView.as_view(), name='list-appointment'),
-    path('appointments/<username>/<int:pk>', appointment_views.AppointmentDetailView.as_view(), name='appointment-detail'),
+    path('appointments/<username>/<str:select>', appointment_views.ListAppointmentsView.as_view(),
+         name='list-appointment'),
+    path('appointments/detail/<username>/<int:pk>', appointment_views.AppointmentDetailView.as_view(),
+         name='appointment-detail'),
+    path('appointments/treat/<username>/<int:pk>', appointment_views.PatientTreatmentView.as_view(), name='treatment'),
     path('', include('home_page.urls')),
 ]
 

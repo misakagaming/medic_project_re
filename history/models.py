@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 
+TYPE_CHOICES = (('a', 'Prescription'),
+           ('b', 'Hospital Stay'))
+
+
 # Create your models here.
 class IllnessType(models.Model):
     type = models.CharField(max_length=100)
@@ -28,16 +32,15 @@ class Illness(models.Model):
 
 class Treatment(models.Model):
     name = models.CharField(max_length=100)
-    is_prescription = models.BooleanField(default=False)
-    is_hospital_stay = models.BooleanField(default=False)
+    type = models.CharField(max_length=1, choices=TYPE_CHOICES, default='a')
     dose = models.FloatField(default=0)
     hospital_name = models.CharField(max_length=100)
     duration = models.IntegerField(default=0)
 
     def __str__(self):
-        if self.is_prescription:
+        if self.type == 'a':
             return f'{self.name}, {self.dose} mg, {self.duration} week(s)'
-        elif self.is_hospital_stay:
+        elif self.type == 'b':
             return f'{self.name}, stayed at {self.hospital_name}, {self.duration} week(s)'
         else:
             return 'what'
