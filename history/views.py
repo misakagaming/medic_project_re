@@ -21,6 +21,3 @@ class UserMedicalHistoryView(LoginRequiredMixin, View):
             messages.error(request, f'Current authorised user is not the correct patient or doctor!')
             return redirect('hospital-home')
         return render(request, 'history/user_records.html', context)
-
-
-
