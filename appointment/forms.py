@@ -8,11 +8,12 @@ class AppointmentForm(forms.ModelForm):
     queryset = User.objects.filter(profile__user_type='b')
     doctor = forms.ModelChoiceField(queryset=queryset)
     time = forms.ChoiceField(choices=TIME_CHOICES)
+    date = forms.DateField(input_formats=['%d/%m/%Y'], help_text='Format: DD/MM/YYYY')
     type = forms.ModelChoiceField(queryset=IllnessType.objects.all())
 
     class Meta:
         model = Appointment
-        fields = ['doctor', 'type', 'time']
+        fields = ['doctor', 'type', 'date', 'time']
 
 
 class TreatmentForm(forms.ModelForm):

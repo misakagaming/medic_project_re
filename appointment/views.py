@@ -21,7 +21,8 @@ class MakeAppointmentView(LoginRequiredMixin, View):
     def post(self, request):
         form = AppointmentForm(request.POST)
         if form.is_valid():
-            if not Appointment.objects.filter(time=form.cleaned_data.get('time'), patient=request.user):
+            if not Appointment.objects.filter(time=form.cleaned_data.get('time'), date=form.cleaned_data.get('date'),
+                                              patient=request.user):
                 appointment = form.save(commit=False)
                 appointment.patient = request.user
                 appointment.save()
@@ -57,11 +58,11 @@ class ListAppointmentsView(View):
             return redirect('hospital-home')
         profile = Profile.objects.get(user__username=username)
         if profile.user_type == 'a':
-            queryset = Appointment.objects.filter(patient__username=username).order_by('time').filter(active=True)
-            queryset2 = Appointment.objects.filter(patient__username=username).order_by('time')
+            queryset = Appointment.objects.filter(patient__username=username).order_by('date', 'time').filter(active=True)
+            queryset2 = Appointment.objects.filter(patient__username=username).order_by('date', 'time')
         else:
-            queryset = Appointment.objects.filter(doctor__username=username).order_by('time').filter(active=True)
-            queryset2 = Appointment.objects.filter(doctor__username=username).order_by('time')
+            queryset = Appointment.objects.filter(doctor__username=username).order_by('date', 'time').filter(active=True)
+            queryset2 = Appointment.objects.filter(doctor__username=username).order_by('date', 'time')
         context = {
             'user': User.objects.get(username=username),
             'user_type': profile.user_type,

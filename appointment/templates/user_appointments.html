@@ -7,9 +7,10 @@
             <th>Patient</th>
             <th>Doctor</th>
             <th>Time</th>
+            <th>Date</th>
             <th>Illness Type</th>
-            <th>Details</th>
             <th>Is Active</th>
+            <th>Details</th>
         </tr>
         {% if select == 'active' %}
             {% for appointment in appointments %}
@@ -17,13 +18,14 @@
                     <td>{{ appointment.patient }}</td>
                     <td>{{ appointment.doctor }}</td>
                     <td>{{ appointment.get_time_display }}</td>
+                    <td>{{ appointment.date }}</td>
                     <td>{{ appointment.type }}</td>
-                    <td><a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{% url 'appointment-detail' user.username appointment.pk %}">Details</a></td>
                     {% if appointment.active %}
                         <td>Yes</td>
                     {% else %}
                         <td>No</td>
                     {% endif %}
+                    <td><a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{% url 'appointment-detail' user.username appointment.pk %}">Details</a></td>
                 </tr>
             {% endfor %}
 
@@ -33,13 +35,14 @@
                     <td>{{ appointment.patient }}</td>
                     <td>{{ appointment.doctor }}</td>
                     <td>{{ appointment.get_time_display }}</td>
+                    <td>{{ appointment.date }}</td>
                     <td>{{ appointment.type }}</td>
-                    <td><a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{% url 'appointment-detail' user.username appointment.pk %}">Details</a></td>
                     {% if appointment.active %}
                         <td>Yes</td>
                     {% else %}
                         <td>No</td>
                     {% endif %}
+                    <td><a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{% url 'appointment-detail' user.username appointment.pk %}">Details</a></td>
                 </tr>
             {% endfor %}
         {% endif %}
@@ -48,6 +51,6 @@
         {% if select == 'active' %}
             <a class="mr-2" href="{% url 'list-appointment' user.username 'all' %}"><br>Show All Appointments</a>
         {% elif select == 'all' %}
-            <a class="mr-2" href="{% url 'list-appointment' user.username 'all' %}"><br>Show Only Active Appointments</a>
+            <a class="mr-2" href="{% url 'list-appointment' user.username 'active' %}"><br>Show Only Active Appointments</a>
         {% endif %}
 {% endblock content %}

@@ -2,6 +2,7 @@ from django.db import models
 from history.models import IllnessType
 from users.models import Profile
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 TIME_CHOICES = (('a', '9:00 - 9:20'),
@@ -26,10 +27,12 @@ class Appointment(models.Model):
     patient = models.ForeignKey(User, related_name="patient", on_delete=models.CASCADE)
     type = models.ForeignKey(IllnessType, null=True, on_delete=models.CASCADE)
     doctor = models.ForeignKey(User, null=True, related_name="doctor", on_delete=models.CASCADE)
+    date = models.DateField(default=timezone.now)
     time = models.CharField(max_length=1, choices=TIME_CHOICES)
     active = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = (('patient', 'time'), ('doctor', 'time'))
+        constraints = [models.UniqueConstraint(fields=['patient', 'time', 'date'], name='patient appointment time'),
+                       models.UniqueConstraint(fields=['doctor', 'time', 'date'], name='doctor appointment time')]
 
 
