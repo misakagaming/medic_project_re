@@ -15,8 +15,8 @@
         {% if select == 'active' %}
             {% for appointment in appointments %}
                 <tr>
-                    <td>{{ appointment.patient }}</td>
-                    <td>{{ appointment.doctor }}</td>
+                    <td><a class="mr-2" href="{% url 'profile' appointment.patient.username %}">{{ appointment.patient }}</a></td>
+                    <td><a class="mr-2" href="{% url 'profile' appointment.doctor.username %}">{{ appointment.doctor }}</a></td>
                     <td>{{ appointment.get_time_display }}</td>
                     <td>{{ appointment.date }}</td>
                     <td>{{ appointment.type }}</td>
@@ -32,8 +32,8 @@
         {% elif select == 'all' %}
             {% for appointment in all %}
                 <tr>
-                    <td>{{ appointment.patient }}</td>
-                    <td>{{ appointment.doctor }}</td>
+                    <td><a class="mr-2" href="{% url 'profile' appointment.patient.username %}">{{ appointment.patient }}</a></td>
+                    <td><a class="mr-2" href="{% url 'profile' appointment.doctor.username %}">{{ appointment.doctor }}</a></td>
                     <td>{{ appointment.get_time_display }}</td>
                     <td>{{ appointment.date }}</td>
                     <td>{{ appointment.type }}</td>
