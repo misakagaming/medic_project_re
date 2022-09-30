@@ -13,10 +13,12 @@
           {% if user.is_authenticated %}
               {% if profile_user == user%}
                 <a class="mr-2" href="{% url 'list-appointment' profile_user.username 'active'%}"><br>{{ profile_user }}'s Appointments</a>
-                <a class="mr-2" href="{% url 'records' profile_user.username%}"><br>{{ profile_user }}'s Medical Record</a>
-                  <div>
-                    <a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{% url 'create-appointment' %}">Make an appointment</a>
-                  </div>
+                  {% if profile.user_type == 'a' %}
+                      <a class="mr-2" href="{% url 'records' profile_user.username%}"><br>{{ profile_user }}'s Medical Record</a>
+                      <div>
+                          <a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{% url 'create-appointment' %}">Make an appointment</a>
+                      </div>
+                  {% endif %}
               {% endif %}
           {% endif %}
         </div>

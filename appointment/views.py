@@ -35,7 +35,7 @@ class MakeAppointmentView(LoginRequiredMixin, View):
 class AppointmentDetailView(View):
     def get(self, request, username, pk):
         appointment = Appointment.objects.get(pk=pk)
-        if not request.user == appointment.patient or request.user == appointment.doctor:
+        if not (request.user == appointment.patient or request.user == appointment.doctor):
             messages.error(request, f'Current user is not the correct user!')
             return redirect('hospital-home')
         type = Profile.objects.get(user__username=username).user_type
