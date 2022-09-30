@@ -31,22 +31,6 @@
                     <button class="btn btn-outline-info" type="submit">Post Comment</button>
                 </div>
             </form>
-            <script type="text/javascript">
-            $(document).on('submit','#comment-form',function(e){
-                e.preventDefault();
-                var comment_form = $('#comment-form')
-                $.ajax({
-                    type:'POST',
-                    url:'{% url 'news-detail' news.id %}',
-                    data: comment_form.serialize(),
-                    header: {'X-CSRFToken' : '{% csrf_token %}'},
-                    success:function(response){
-
-                          alert('Saved');
-                            }
-                    });
-            });
-            </script>
         </div>
         <div class="container">
             <div class="row">

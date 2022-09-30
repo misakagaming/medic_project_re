@@ -68,20 +68,6 @@ class NewsDetailsView(View):
         return redirect('news-detail', pk)
 
 
-class AddCommentView(LoginRequiredMixin, View):
-    def post(self, request, pk):
-        form = CommentForm(request.POST, request.FILES)
-        comments = Comment.objects.filter(news_id=pk).order_by('-date_posted')
-        if form.is_valid():
-            comment_created = form.save(commit=False)
-            comment_created.author = request.user
-            comment_created.news_id = pk
-            comment_created.save()
-            comments = Comment.objects.filter(news_id=pk).order_by('-date_posted')
-
-        return render(request, 'home_page/comment_list.html', {'comments': comments})
-
-
 class NewsCreateView(LoginRequiredMixin, View):
     def get(self, request):
         form = NewsForm()
@@ -145,6 +131,55 @@ class NewsDeleteView(LoginRequiredMixin, View):
         raise Http404
 
 
+class CommentUpdateView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        comment = Comment.objects.filter(pk=pk)
+        if comment:
+            comment = comment.first()
+            if not comment.author_id == request.user.id:
+                messages.error(request, f'Current authorised user is not the original author')
+                return redirect('hospital-home')
+            form = CommentForm(instance=comment)
+            return render(request, 'home_page/comment_form.html', {'form': form})
+        raise Http404
+
+    def post(self, request, pk):
+        comment = Comment.objects.filter(pk=pk)
+        if comment:
+            comment = comment.first()
+            form = CommentForm(request.POST, request.FILES, instance=comment)
+            if form.is_valid():
+                comment_updated = form.save(commit=False)
+                comment_updated.author = request.user
+                comment_updated.save()
+                messages.success(request, f'Comment updated')
+                return redirect('news-detail', pk=comment_updated.news.id)
+            else:
+                return render(request, 'home_page/comment_form.html', {'form': form})
+        raise Http404
+
+
+class CommentDeleteView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        comment = Comment.objects.filter(pk=pk)
+        if comment:
+            comment = comment.first()
+            if not comment.author_id == request.user.id:
+                messages.error(request, f'Current authorised user is not the original author')
+                return redirect('hospital-home')
+            return render(request, 'home_page/comment_confirm_delete.html', {'news': comment})
+        raise Http404
+
+    def post(self, request, pk):
+        comment = Comment.objects.get(pk=pk)
+        if comment:
+            news = comment.news
+            comment.delete()
+            messages.success(request, f'Comment deleted')
+            return redirect('news-detail', pk=news.id)
+        raise Http404
+
+
 class AboutView(View):
     def get(self, request):
         user_count = User.objects.count()
@@ -166,8 +201,8 @@ class AboutView(View):
                                                           .annotate(patient_count=Count('patient'))
                                                           .order_by('-patient_count').first()['patient'])
         doctor_with_most_appointments = User.objects.get(pk=Appointment.objects.values('doctor')
-                                                          .annotate(doctor_count=Count('doctor'))
-                                                          .order_by('-doctor_count').first()['doctor'])
+                                                         .annotate(doctor_count=Count('doctor'))
+                                                         .order_by('-doctor_count').first()['doctor'])
         appointment_count = Appointment.objects.count()
         active_appointment_count = Appointment.objects.filter(active=True).count()
 

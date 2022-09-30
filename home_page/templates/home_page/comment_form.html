@@ -1,0 +1,17 @@
+{% extends "home_page/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <title>Hospital - Update Comment</title>
+    <div class="content-section">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Update Comment</legend>
+                {{ form|crispy  }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
