@@ -2,5 +2,16 @@
 {% block content %}
     <title>Hospital - About</title>
     <h1>About</h1>
-    This is a project by Eray ERER, still in construction.
+    This is a project by Eray ERER, still in construction. <br>
+    # of users: {{ user_count }} <br>
+    # of news: {{ news_count }} <br>
+    # of comments: {{ comment_count }} <br>
+    # of patients: {{ patient_count }} <br>
+    # of doctors: {{ doctor_count }} <br>
+    # of appointments: {{ active_appointment_count }} active, {{ appointment_count }} total <br>
+    User with the most news: <a class="mr-2" href="{% url 'profile' user_with_most_news.username %}">{{ user_with_most_news }}</a> <br>
+    User with the most comments: <a class="mr-2" href="{% url 'profile' user_with_most_comments.username %}">{{ user_with_most_comments }}</a> <br>
+    User with the most medical records: <a class="mr-2" href="{% url 'profile' user_with_most_medical_records.username %}">{{ user_with_most_medical_records }}</a> <br>
+    Patient with the most appointments: <a class="mr-2" href="{% url 'profile' patient_with_most_appointments.username %}">{{ patient_with_most_appointments }}</a> <br>
+    Doctor with the most appointments: <a class="mr-2" href="{% url 'profile' doctor_with_most_appointments.username %}">{{ doctor_with_most_appointments }}</a> <br> <br>
 {% endblock content %}

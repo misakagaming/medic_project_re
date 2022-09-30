@@ -1,11 +1,16 @@
 from django.shortcuts import render, redirect
 from django.views import View
+from django.db.models import *
 from .forms import *
 from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
+from .models import News, Comment
+from users.models import Profile
+from history.models import MedicalHistoryRecord
+from appointment.models import Appointment
 
 
 # Create your views here.
@@ -142,4 +147,42 @@ class NewsDeleteView(LoginRequiredMixin, View):
 
 class AboutView(View):
     def get(self, request):
-        return render(request, 'home_page/about.html')
+        user_count = User.objects.count()
+        news_count = News.objects.count()
+        comment_count = Comment.objects.count()
+        user_with_most_news = User.objects.get(pk=News.objects.values('author')
+                                               .annotate(author_count=Count('author'))
+                                               .order_by('-author_count').first()['author'])
+        user_with_most_comments = User.objects.get(pk=Comment.objects.values('author')
+                                                   .annotate(author_count=Count('author'))
+                                                   .order_by('-author_count').first()['author'])
+
+        patient_count = Profile.objects.filter(user_type='a').count()
+        doctor_count = Profile.objects.filter(user_type='b').count()
+        user_with_most_medical_records = User.objects.get(pk=MedicalHistoryRecord.objects.values('patient')
+                                                          .annotate(patient_count=Count('patient'))
+                                                          .order_by('-patient_count').first()['patient'])
+        patient_with_most_appointments = User.objects.get(pk=Appointment.objects.values('patient')
+                                                          .annotate(patient_count=Count('patient'))
+                                                          .order_by('-patient_count').first()['patient'])
+        doctor_with_most_appointments = User.objects.get(pk=Appointment.objects.values('doctor')
+                                                          .annotate(doctor_count=Count('doctor'))
+                                                          .order_by('-doctor_count').first()['doctor'])
+        appointment_count = Appointment.objects.count()
+        active_appointment_count = Appointment.objects.filter(active=True).count()
+
+        context = {
+            'user_count': user_count,
+            'news_count': news_count,
+            'comment_count': comment_count,
+            'user_with_most_news': user_with_most_news,
+            'user_with_most_comments': user_with_most_comments,
+            'patient_count': patient_count,
+            'doctor_count': doctor_count,
+            'user_with_most_medical_records': user_with_most_medical_records,
+            'patient_with_most_appointments': patient_with_most_appointments,
+            'doctor_with_most_appointments': doctor_with_most_appointments,
+            'appointment_count': appointment_count,
+            'active_appointment_count': active_appointment_count
+        }
+        return render(request, 'home_page/about.html', context=context)
